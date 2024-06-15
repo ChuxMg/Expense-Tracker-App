@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
   },
   period: {
     fontSize: 12,
-    color: GlobalStyles.colors.primary700,
+    color: GlobalStyles.colors.primary800,
   },
   sum: {
     fontSize: 16,
     fontWeight: "bold",
-    color: GlobalStyles.colors.primary700,
+    color: GlobalStyles.colors.primary800,
   },
 });
