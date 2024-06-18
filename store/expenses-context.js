@@ -7,27 +7,6 @@ export const ExpensesContext = createContext({
   updateExpense: (id, { description, amount, date }) => {},
 });
 
-function expensesReducer(state, action) {
-  switch (action.type) {
-    case "ADD":
-      const id = new Date().toString() + Math.random().toString();
-      return [{ ...action.payload, id: id }, ...state];
-    case "UPDATE":
-      const updatableExpenseIndex = state.findIndex(
-        (expenses) => expense.id === action.payload.id
-      );
-      const updatableExpense = state[updatableExpenseIndex];
-      const updatedItem = { ...updatableExpense, ...action.payload.data };
-      const updatedExpenses = [...state];
-      updatedExpenses[updatableExpenseIndex] = updatedItem;
-      return updatedExpenses;
-
-    case "DELETE":
-        return state.filter((expense) => expense.id !== action.payload)
-    default:
-      return state;
-  }
-}
 
 const DUMMY_EXPENSES = [
   {
@@ -90,7 +69,37 @@ const DUMMY_EXPENSES = [
     amount: 14.75,
     date: new Date("2023-02-19"),
   },
+  {
+    id: "e11",
+    description: "Purchase Pencils",
+    amount: 9.76,
+    date: new Date("2024-06-16"),
+  },
 ];
+
+
+function expensesReducer(state, action) {
+  switch (action.type) {
+    case "ADD":
+      const id = new Date().toString() + Math.random().toString();
+      return [{ ...action.payload, id: id }, ...state];
+    case "UPDATE":
+      const updatableExpenseIndex = state.findIndex(
+        (expense) => expense.id === action.payload.id
+      );
+      const updatableExpense = state[updatableExpenseIndex];
+      const updatedItem = { ...updatableExpense, ...action.payload.data };
+      const updatedExpenses = [...state];
+      updatedExpenses[updatableExpenseIndex] = updatedItem;
+      return updatedExpenses;
+
+    case "DELETE":
+      return state.filter((expense) => expense.id !== action.payload);
+    default:
+      return state;
+  }
+}
+
 
 function ExpensesContextProvider({ children }) {
   const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
@@ -107,7 +116,14 @@ function ExpensesContextProvider({ children }) {
     dispatch({ type: "UPDATE", payload: { id: id, data: expenseData } });
   }
 
-  return <ExpensesContext.Provider>{children}</ExpensesContext.Provider>;
+  const value = {
+    expenses: expensesState,
+    addExpense: addExpense,
+    deleteExpense: deleteExpense,
+    updateExpense: updateExpense
+  };
+
+  return <ExpensesContext.Provider value={value} >{children}</ExpensesContext.Provider>;
 }
 
 export default ExpensesContextProvider;
