@@ -21,15 +21,7 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     });
   }
 
-  function submitHandler() {
-    const expenseData = {
-      amount: +inputValues.amount,
-      date: new Date(inputValues.date),
-      description: inputValues.description,
-    };
-
-    onSubmit(expenseData);
-  }
+  function submitHandler() {}
 
   return (
     <View style={styles.form}>
